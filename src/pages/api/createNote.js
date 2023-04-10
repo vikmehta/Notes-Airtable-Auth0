@@ -1,10 +1,25 @@
+const Airtable = require('airtable')
+const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
+const table = base(process.env.AIRTABLE_TABLE_NAME)
+
 const createNote = async (req, res) => {
     try {
-        console.log(req.url)
-        console.log(req.method)
-        console.log(req.body)
+        const { title, description } = req.body
+
+        if (!title || !description) {
+            return res.status(400).json({ msg: 'Record not created. Missing the required fields!!!' })
+        }
+
+        const createdRecord = await table.create({
+            title,
+            description
+        })
+
+        res.status(201)
+        res.json(createdRecord)
     } catch (error) {
         console.log(error)
+        res.status(500)
         res.json({ msg: 'Something went wrong!' })
     }
 }

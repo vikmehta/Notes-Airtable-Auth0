@@ -112,3 +112,45 @@ const handler = async (req, res) => {
 
 export default handler
 ```
+
+## Create a new record
+
+- To create new records, use the **create** method given by Airtable API.
+- Note that table names and table ids can be used interchangeably.
+- The **first argument** of **create method** should be an array of up to 10 record objects.
+- Each of these objects should have one key called **fields**.
+- The value of the fields key is another object containing your record's cell values.
+- **create** method will return an array of created record objects if the call was successful.
+
+Accoring to the Airtable API documentation, we can also include a **single record object at the top level**. This one is much simpler, so we will use this approach.
+
+```
+const Airtable = require('airtable)
+const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
+const table = base(process.env.AIRTABLE_TABLE_NAME)
+
+const createNote = async (req, res) => {
+    try {
+        const { title, description } = req.body
+
+        if (!title || !description) {
+            return res.status(400).json({ msg: 'Record not created. Missing the required fields!!!'})
+        }
+
+        const createdRecord = await table.create({
+            title,
+            description
+        })
+
+        res.status(200)
+        res.json(createdRecord)
+    } catch(error) {
+        res.status(500)
+        res.json({ msg: 'Something went wrong!' })
+    }
+}
+
+export default createNote
+```
+
+In the example above we create a single record by passing an object in create method that contains the title and description as required fields.
