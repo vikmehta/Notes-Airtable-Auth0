@@ -38,3 +38,77 @@ export default handler
 In the example above we are creating **base and table** variables by referring to our environment variables.
 
 In the function, we are selecting the table and retriving first page of data and saving it in a variable called records. We are then simply sending these records as a json response.
+
+## Refactoring the getNotes serverless function
+
+If you make a get request on `/api/getNotes` endpoint on your browser, you will see that the server is responding with a json with all our notes, and it will look like this:
+
+```
+[
+    {
+        "_table": {
+            "_base": {
+                "_airtable": {},
+                "_id": "<BASE ID>"
+            },
+            "id": null,
+            "name": "Notes"
+        },
+        "id": "<RECORD ID>",
+        "_rawJson": {
+            "id": "<RECORD ID>",
+            "createdTime": "2023-04-04T04:36:46.000Z",
+            "fields": {
+                "description": "- Place 1\n- Place 2\n- Place 3\n",
+                "title": "Places to visit"
+            }
+        },
+        "fields": {
+            "description": "- Place 1\n- Place 2\n- Place 3\n",
+            "title": "Places to visit"
+        }
+    },
+    ...
+]
+```
+
+As we can see that it contains a lot of extra information that I might not need. So we will run a clean up function and get only the information that we need.
+
+The cleanup function will look something like this:
+
+```
+export const cleanUpRecords = async (records) => {
+    const cleanData = await records.map((record) => {
+        return {
+            id: record.id,
+            ...record.fields,
+            createdTime: record['_rawJson'].createdTime
+        }
+    })
+
+    return cleanData
+}
+```
+
+Now we can refactor our getNotes function to use and return the cleaned up data. We will also use try and catch block to handle the errors. After refactoring the **getNotes** will look like this:
+
+```
+const Airtable = require('airtable');
+const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
+const table = base(process.env.AIRTABLE_TABLE_NAME)
+import { cleanUpRecords } from 'helpers/helpers';
+
+const handler = async (req, res) => {
+    try {
+        const records = await table.select().firstPage()
+        const cleanRecords = await cleanUpRecords(records)
+        res.status(200)
+        res.json(cleanRecords)
+    } catch (error) {
+        res.status(500)
+        res.json({ msg: 'Something went wrong!' })
+    }
+}
+
+export default handler
+```
