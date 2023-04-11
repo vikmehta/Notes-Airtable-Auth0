@@ -154,3 +154,49 @@ export default createNote
 ```
 
 In the example above we create a single record by passing an object in create method that contains the title and description as required fields.
+
+
+## Updating a record
+
+- To update records, use the **update** or **replace** method given by Airtable API.
+- The **update** method will only update the fields you include. Fields not included will remain unchanged.
+- The **replace** will perform a destructive update and clear all unincluded cell values.
+
+Updating a record in Airtable is very similar to creating a new record.
+
+- The **first argument** of **update method** should be an array of up to 10 record objects.
+- Each of these objects should have and **id** property representing the record ID, and a **fields** property.
+- The value of the fields key is another object containing your record's cell values.
+- **update** method will return an array of updated record objects if the call was successful.
+
+Accoring to the Airtable API documentation, we can also include a **single record object at the top level**. This one is much simpler, so we will use this approach.
+
+```
+const isEmpty = require('lodash.isempty');
+const Airtable = require('airtable')
+const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
+const table = base(process.env.AIRTABLE_TABLE_NAME)
+
+const updateNote = async (req, res) => {
+    try {
+        const { id, ...updates } = req.body
+
+        if (!id || isEmpty(updates)) {
+            return res.status(400).json({ msg: 'No record updated. Missing required values!' })
+        }
+
+        const updatedRecord = await table.update(id, updates)
+
+        res.status(200)
+        res.json(updatedRecord)
+    } catch (error) {
+        console.log(error)
+        res.status(500)
+        res.json({ msg: 'Something went wrong!' })
+    }
+}
+
+export default updateNote
+```
+
+In the example above we updating a single record by passing an object in update method that contains the id and title as required fields.
