@@ -16,11 +16,9 @@ export const cleanUpRecords = async (records) => {
 // Get Date from Timestamp
 export const getDateFromTimestamp = (timeStamp) => {
     const d = new Date(timeStamp)
-    const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
-    const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d);
-    const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-
-    return `${da}-${mo}-${ye}`
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    const formattedDate = d.toLocaleString("en-US", options)
+    return formattedDate
 }
 
 // Sanitize the markup html

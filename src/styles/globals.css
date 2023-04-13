@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.editBox {
+  max-width: 3rem;
+}
 
 /* :root {
   --max-width: 1100px;

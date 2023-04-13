@@ -1,9 +1,6 @@
 import Head from 'next/head'
-import { Inter } from '@next/font/google'
 import { cleanUpRecords } from 'helpers/helpers'
 import Notes from '@/components/Notes'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const getServerSideProps = async (context) => {
 	const Airtable = require('airtable');
