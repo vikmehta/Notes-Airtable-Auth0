@@ -1,27 +1,18 @@
-// import { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import isEmpty from "lodash.isempty"
 import { useContext } from "react"
-import Link from 'next/link'
 import { NotesContext } from "@/context/NotesContext"
 import { getDateFromTimestamp, sanitizeContent } from "@/helpers/helpers"
 
-export const getServerSideProps = async (context) => {
-    console.log(context.params.noteId)
+const NoteSingle = () => {
+    const router = useRouter()
+    const { noteId } = router.query
 
-    return {
-        props: {
-            id: context.params.noteId
-        }
-    }
-}
-
-const NoteSingle = (props) => {
-    const { id } = props
     const { notes } = useContext(NotesContext)
-    const note = notes.find((item) => item.id === id)
+    const note = notes.find((item) => item.id === noteId)
 
     if (isEmpty(note)) {
-        return <h1>No Note found with id - {id}</h1>
+        return <h1>No Note found with id - {noteId}</h1>
     }
 
     const { title, description, createdTime } = note
