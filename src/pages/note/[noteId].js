@@ -1,16 +1,38 @@
-import Link from "next/link"
-import { getDateFromTimestamp, sanitizeContent } from "helpers/helpers"
+// import { useRouter } from 'next/router'
+import isEmpty from "lodash.isempty"
+import { useContext } from "react"
+import Link from 'next/link'
+import { NotesContext } from "@/context/NotesContext"
+import { getDateFromTimestamp, sanitizeContent } from "@/helpers/helpers"
 
-const Note = (props) => {
-    const { id, title, description, createdTime } = props
+export const getServerSideProps = async (context) => {
+    console.log(context.params.noteId)
+
+    return {
+        props: {
+            id: context.params.noteId
+        }
+    }
+}
+
+const NoteSingle = (props) => {
+    const { id } = props
+    const { notes } = useContext(NotesContext)
+    const note = notes.find((item) => item.id === id)
+
+    if (isEmpty(note)) {
+        return <h1>No Note found with id - {id}</h1>
+    }
+
+    const { title, description, createdTime } = note
     const createdDate = getDateFromTimestamp(createdTime)
     const sanitizedDescription = sanitizeContent(description)
 
     return (
-        <div className="flex mb-3 bg-white shadow-lg rounded-lg text-blue-500">
+        <div className="flex my-6 bg-white shadow-lg rounded-lg text-blue-500">
             <div className="flex-1 p-5">
                 <h3 className="text-xl text-gray-700 font-semibold mb-2">
-                    <Link href={`/note/${id}`}>{title}</Link>
+                    {title}
                 </h3>
                 <p className="text-gray-500 uppercase font-medium text-sm tracking-widest mb-3">{createdDate}</p>
                 <div dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
@@ -25,4 +47,4 @@ const Note = (props) => {
     )
 }
 
-export default Note
+export default NoteSingle

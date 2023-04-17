@@ -7,6 +7,12 @@
       ],
       "@/components/*": [
         "./components/*"
+      ],
+      "@/context/*": [
+        "./context/*"
+      ],
+      "@/helpers/*": [
+        "./helpers/*"
       ]
     }
   }
