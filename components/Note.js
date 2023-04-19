@@ -2,12 +2,12 @@ import Link from "next/link"
 import { getDateFromTimestamp, sanitizeContent } from "helpers/helpers"
 
 const Note = (props) => {
-    const { id, title, description, createdTime } = props
+    const { id, title, description, createdTime, color } = props
     const createdDate = getDateFromTimestamp(createdTime)
     const sanitizedDescription = sanitizeContent(description)
 
     return (
-        <div className="flex mb-3 bg-white shadow-lg rounded-lg text-blue-500">
+        <div className={`flex mb-3 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} note-container`}>
             <div className="flex-1 p-5">
                 <h3 className="text-xl text-gray-700 font-semibold mb-2">
                     <Link href={`/note/${id}`}>{title}</Link>

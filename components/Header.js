@@ -7,7 +7,8 @@ const Header = () => {
                 <span className='text-2xl font-bold text-gray-700'>My Notes</span>
             </Link>
             <nav className='flex'>
-                <a href='/api/login' className='block rounded bg-blue-500 hover:bg-blue-600 text-white px-4 py-2'>Login</a>
+                <Link href="/add" className="block rounded bg-green-500 hover:bg-green-600 text-white px-4 py-2 ms-2">Add Note</Link>
+                <a href='/api/login' className='block rounded bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ms-2'>Login</a>
                 <a href='/api/logout' className='block rounded bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 ms-2'>Logout</a>
             </nav>
         </header>

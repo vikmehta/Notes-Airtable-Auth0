@@ -6,9 +6,9 @@ const Notes = (props) => {
     return (
         <div>
             {notes.map((note) => {
-                const { id, title, description, createdTime } = note
+                const { id, title, description, createdTime, color } = note
 
-                return <Note key={id} id={id} title={title} description={description} createdTime={createdTime} />
+                return <Note key={id} id={id} title={title} description={description} createdTime={createdTime} color={color} />
             })}
         </div>
     )
