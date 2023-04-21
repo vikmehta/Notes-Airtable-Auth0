@@ -18,15 +18,14 @@ const NoteSingle = () => {
     const { title, description, createdTime, color } = note
     const createdDate = getDateFromTimestamp(createdTime)
     const sanitizedDescription = sanitizeContent(description)
-    // const bgColor = getColor(color)
 
     return (
         <div className={`flex my-6 bg-white shadow-lg rounded-lg text-blue-500 bg-${color}`}>
             <div className="flex-1 p-5">
-                <h3 className="text-xl text-gray-700 font-semibold mb-2">
+                <h3 className="text-xl text-gray-700 font-semibold mb-2 noteTitle">
                     {title}
                 </h3>
-                <p className="text-gray-500 uppercase font-medium text-sm tracking-widest mb-3">{createdDate}</p>
+                <p className="text-gray-500 uppercase font-medium text-sm tracking-widest mb-3 createdDate">{createdDate}</p>
                 <div dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
             </div>
             <div className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-r-lg editBox cursor-pointer">

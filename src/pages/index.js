@@ -36,7 +36,7 @@ const Home = (props) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
-				<h1 className='text-xl font-bold mb-5'>NextJS - AirTable - Auth0 App</h1>
+				<h1 className='text-xl mb-5'>NextJS - AirTable - Auth0 App</h1>
 				<Notes notes={notes} />
 			</main>
 		</>
