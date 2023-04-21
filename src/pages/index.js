@@ -1,6 +1,8 @@
 import Head from 'next/head'
+import { useContext, useEffect } from 'react'
 import { cleanUpRecords } from 'helpers/helpers'
 import Notes from '@/components/Notes'
+import { NotesContext } from '@/context/NotesContext'
 
 export const getServerSideProps = async (context) => {
 	const Airtable = require('airtable');
@@ -17,8 +19,13 @@ export const getServerSideProps = async (context) => {
 	}
 }
 
-export default function Home(props) {
+const Home = (props) => {
 	const { initialNotes } = props
+	const { notes, setNotes } = useContext(NotesContext)
+
+	useEffect(() => {
+		setNotes(initialNotes)
+	}, [initialNotes, setNotes])
 
 	return (
 		<>
@@ -30,8 +37,10 @@ export default function Home(props) {
 			</Head>
 			<main>
 				<h1 className='text-xl font-bold mb-5'>NextJS - AirTable - Auth0 App</h1>
-				<Notes notes={initialNotes} />
+				<Notes notes={notes} />
 			</main>
 		</>
 	)
 }
+
+export default Home

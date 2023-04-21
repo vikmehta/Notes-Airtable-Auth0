@@ -4,15 +4,16 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 
 const createNote = async (req, res) => {
     try {
-        const { title, description } = req.body
+        const { title, description, color } = req.body
 
-        if (!title || !description) {
+        if (!title || !description || !color) {
             return res.status(400).json({ msg: 'Record not created. Missing the required fields!!!' })
         }
 
         const createdRecord = await table.create({
             title,
-            description
+            description,
+            color
         })
 
         res.status(201)

@@ -13,6 +13,16 @@ export const cleanUpRecords = async (records) => {
     return cleanData
 }
 
+export const cleanUpSingleRecord = async (record) => {
+    const cleanData = {
+        id: record.id,
+        ...record.fields,
+        createdTime: record['_rawJson'].createdTime
+    }
+
+    return cleanData
+}
+
 // Get Date from Timestamp
 export const getDateFromTimestamp = (timeStamp) => {
     const d = new Date(timeStamp)
