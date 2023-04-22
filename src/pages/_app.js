@@ -4,7 +4,7 @@ import { NotesProvider } from '@/context/NotesContext'
 
 export default function App({ Component, pageProps }) {
 	return (
-		<div className="container mx-auto py-6">
+		<div className="container mx-auto p-6">
 			<NotesProvider>
 				<Header />
 				<Component {...pageProps} />

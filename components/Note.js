@@ -2,18 +2,18 @@ import Link from "next/link"
 import { getDateFromTimestamp, sanitizeContent } from "helpers/helpers"
 
 const Note = (props) => {
-    const { id, title, description, createdTime, color } = props
-    const createdDate = getDateFromTimestamp(createdTime)
+    const { id, title, description, createdDate, color } = props
+    const created = getDateFromTimestamp(createdDate)
     const sanitizedDescription = sanitizeContent(description)
 
     return (
         <div className={`flex mb-3 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} note-container`}>
-            <div className="flex-1 p-9">
-                <h3 className="text-xl text-gray-700 font-semibold mb-2 noteTitle">
+            <div className="flex-1 px-9 py-7 noteWrapper">
+                <h3 className="text-xl text-gray-700 font-semibold mb-2 uppercase noteTitle">
                     <Link href={`/note/${id}`}>{title}</Link>
                 </h3>
-                <p className="text-gray-500 uppercase font-medium text-sm tracking-widest mb-3 createdDate">{createdDate}</p>
-                <div dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
+                <p className="text-gray-500 uppercase font-medium text-sm tracking-widest mb-3 createdDate">{created}</p>
+                <div className="noteContent" dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
             </div>
             <div className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-r-lg editBox cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="block w-full mb-3">

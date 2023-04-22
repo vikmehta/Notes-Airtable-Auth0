@@ -5,8 +5,7 @@ export const cleanUpRecords = async (records) => {
     const cleanData = await records.map((record) => {
         return {
             id: record.id,
-            ...record.fields,
-            createdTime: record['_rawJson'].createdTime
+            ...record.fields
         }
     })
 
@@ -16,8 +15,7 @@ export const cleanUpRecords = async (records) => {
 export const cleanUpSingleRecord = async (record) => {
     const cleanData = {
         id: record.id,
-        ...record.fields,
-        createdTime: record['_rawJson'].createdTime
+        ...record.fields
     }
 
     return cleanData

@@ -2,14 +2,27 @@ import { useRouter } from 'next/router'
 import isEmpty from "lodash.isempty"
 import { useContext } from "react"
 import { NotesContext } from "@/context/NotesContext"
-import { getDateFromTimestamp, sanitizeContent, getColor } from "@/helpers/helpers"
+import { getDateFromTimestamp, sanitizeContent, cleanUpSingleRecord } from "@/helpers/helpers"
 
-const NoteSingle = () => {
-    const router = useRouter()
-    const { noteId } = router.query
+export const getServerSideProps = async (context) => {
+    const { noteId } = context.params
 
-    const { notes } = useContext(NotesContext)
-    const note = notes.find((item) => item.id === noteId)
+    const Airtable = require('airtable');
+    const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID)
+    const table = base(process.env.AIRTABLE_TABLE_NAME)
+
+    const note = await table.find(noteId)
+    const cleanNote = await cleanUpSingleRecord(note)
+
+    return {
+        props: {
+            note: cleanNote
+        }
+    }
+}
+
+const NoteSingle = (props) => {
+    const { note } = props
 
     if (isEmpty(note)) {
         return <h1>No Note found with id - {noteId}</h1>

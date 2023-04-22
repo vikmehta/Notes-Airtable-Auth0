@@ -9,7 +9,9 @@ export const getServerSideProps = async (context) => {
 	const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
 	const table = base(process.env.AIRTABLE_TABLE_NAME)
 
-	const notes = await table.select().firstPage()
+	const notes = await table.select({
+		sort: [{ field: "createdDate", direction: "desc" }]
+	}).firstPage()
 	const cleanNotes = await cleanUpRecords(notes)
 
 	return {

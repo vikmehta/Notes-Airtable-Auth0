@@ -5,7 +5,9 @@ import { cleanUpRecords } from 'helpers/helpers';
 
 const handler = async (req, res) => {
     try {
-        const records = await table.select().firstPage()
+        const records = await table.select({
+            sort: [{ field: "createdDate", direction: "desc" }]
+        }).firstPage()
         const cleanRecords = await cleanUpRecords(records)
         res.status(200)
         res.json(cleanRecords)
