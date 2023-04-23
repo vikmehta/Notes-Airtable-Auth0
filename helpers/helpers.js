@@ -31,7 +31,8 @@ export const getDateFromTimestamp = (timeStamp) => {
 
 // Sanitize the markup html
 export const sanitizeContent = (content) => {
-    const HTMLString = marked(content)
-    const sanitizedHTMLString = DOMPurify.sanitize(HTMLString)
+    let HTMLString = marked(content)
+    HTMLString = HTMLString.replace(/href/g, "target='_blank' rel='noopener noreferrer' href")
+    const sanitizedHTMLString = DOMPurify.sanitize(HTMLString, { ADD_ATTR: ['target'] })
     return sanitizedHTMLString
 }

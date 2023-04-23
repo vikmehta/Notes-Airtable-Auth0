@@ -8,8 +8,12 @@ export const NotesProvider = (props) => {
     const { children } = props
     const [notes, setNotes] = useState([])
     const [notesLoadingStatus, setNotesLoadingStatus] = useState(false)
-    const [noteLoadingStatus, setNoteLoadingStatus] = useState(false)
     const [error, setError] = useState(null)
+
+    const [noteLoadingStatus, setNoteLoadingStatus] = useState(false)
+    const [errorDeletingNote, setErrorDeletingNote] = useState(null)
+
+    const [noteDeleting, setNoteDeleting] = useState(false)
     const [errorSingleNote, setErrorSingleNote] = useState(null)
 
     // useEffect(() => {
@@ -37,10 +41,28 @@ export const NotesProvider = (props) => {
             const responseData = await cleanUpSingleRecord(response.data)
             setNotes([responseData, ...notes])
             setNoteLoadingStatus(false)
+            return response
         } catch (error) {
             console.log(error)
-            setNoteLoadingStatus(false)
             setErrorSingleNote(`Something went wrong adding a Note. ${error.message}`)
+            setNoteLoadingStatus(false)
+            return error
+        }
+    }
+
+    const removeNote = async (id) => {
+        setNoteDeleting(true)
+        try {
+            const response = await axios.delete(`/api/deleteNote?id=${id}`)
+            setNoteDeleting(false)
+            return response
+        } catch (error) {
+            setErrorDeletingNote({
+                msg: 'Something went wrong deleting the note',
+                error
+            })
+            setNoteDeleting(false)
+            return error
         }
     }
 
@@ -48,6 +70,9 @@ export const NotesProvider = (props) => {
         notes,
         setNotes,
         addNote,
+        removeNote,
+        noteDeleting,
+        errorDeletingNote,
         noteLoadingStatus,
         errorSingleNote
     }

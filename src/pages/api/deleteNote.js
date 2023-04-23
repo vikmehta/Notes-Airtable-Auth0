@@ -4,7 +4,7 @@ const table = base(process.env.AIRTABLE_TABLE_NAME)
 
 const deleteNote = async (req, res) => {
     try {
-        const { id } = req.body
+        const { id } = req.query
 
         if (!id) {
             res.status(400).json({ msg: 'Missing a required field!' })

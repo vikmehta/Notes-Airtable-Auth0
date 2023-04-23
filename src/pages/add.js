@@ -27,7 +27,7 @@ const AddNote = () => {
         }
     }, [errorSingleNote])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (!noteTitle || !note) {
@@ -41,21 +41,23 @@ const AddNote = () => {
             color: selectedColor
         }
 
-        addNote(formData)
+        const response = await addNote(formData)
         setNoteTitle('')
         setNote('')
         setSelectedColor('white')
 
-        if (!noteLoadingStatus && !errorSingleNote) {
+        if (!response.response && !noteLoadingStatus && !errorSingleNote) {
             router.push('/')
         }
     }
+
+    const noteLoadingClass = noteLoadingStatus ? 'opacity-50' : ''
 
     return (
         <div>
             {error && <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-4 rounded relative' role='alert'>{error}</div>}
             <h1 className='text-2xl mb-5'>Add a new note</h1>
-            <form onSubmit={handleSubmit} className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
+            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ${noteLoadingClass}`}>
                 <InputGroup title="Note Title">
                     <input
                         type="text"
@@ -74,7 +76,7 @@ const AddNote = () => {
                         spellCheck="false"
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
-                        className='appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white h-56'
+                        className='appearance-none block w-full bg-gray-100 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white h-56 leading-6'
                     />
                 </InputGroup>
                 <InputGroup title="Select Note Color">
