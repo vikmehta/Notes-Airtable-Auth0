@@ -16,6 +16,9 @@ export const NotesProvider = (props) => {
     const [noteDeleting, setNoteDeleting] = useState(false)
     const [errorSingleNote, setErrorSingleNote] = useState(null)
 
+    const [noteUpdating, setNoteUpdating] = useState(false)
+    const [errorNoteUpdating, setErrorNoteUpdating] = useState(null)
+
     // useEffect(() => {
     //     const getNotes = async () => {
     //         setNotesLoadingStatus(true)
@@ -66,15 +69,38 @@ export const NotesProvider = (props) => {
         }
     }
 
+    const updateNote = async (id, updates) => {
+        setNoteUpdating(true)
+        try {
+            const response = await axios.patch('/api/updateNote', {
+                id,
+                ...updates
+            })
+            if (response.status === 200 && response.statusText === "OK") {
+                setNoteUpdating(false)
+                return response
+            }
+        } catch (error) {
+            console.log(error)
+            setErrorNoteUpdating('Something went wrong while updating the note')
+            setNoteUpdating(false)
+            return error
+        }
+    }
+
     const globalState = {
         notes,
         setNotes,
         addNote,
         removeNote,
+        updateNote,
         noteDeleting,
         errorDeletingNote,
         noteLoadingStatus,
-        errorSingleNote
+        errorSingleNote,
+
+        noteUpdating,
+        errorNoteUpdating
     }
 
     return (
