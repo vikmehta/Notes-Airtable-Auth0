@@ -3,6 +3,7 @@ import { useContext, useEffect } from 'react'
 import { cleanUpRecords } from 'helpers/helpers'
 import Notes from '@/components/Notes'
 import { NotesContext } from '@/context/NotesContext'
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export const getServerSideProps = async (context) => {
 	const Airtable = require('airtable');
@@ -24,6 +25,7 @@ export const getServerSideProps = async (context) => {
 const Home = (props) => {
 	const { initialNotes } = props
 	const { notes, setNotes } = useContext(NotesContext)
+	const { user, error, isLoading } = useUser();
 
 	useEffect(() => {
 		setNotes(initialNotes)
@@ -38,8 +40,13 @@ const Home = (props) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
-				<h1 className='text-xl mb-5'>NextJS - AirTable - Auth0 App</h1>
-				<Notes notes={notes} />
+				{!user && <h1 className='text-xl my-20 text-center'>You must be logged in to see / create notes.</h1>}
+				{user && (
+					<>
+						<h1 className='text-xl mb-5'>NextJS - AirTable - Auth0 App</h1>
+						<Notes notes={notes} />
+					</>
+				)}
 			</main>
 		</>
 	)

@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react"
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import isEmpty from "lodash.isempty"
 import { useRouter } from 'next/router'
 import InputGroup from '@/components/InputGroup'
@@ -125,4 +126,4 @@ const EditNote = (props) => {
     )
 }
 
-export default EditNote
+export default withPageAuthRequired(EditNote)

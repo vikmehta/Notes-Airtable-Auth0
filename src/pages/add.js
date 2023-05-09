@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import ColorSelector from "@/components/ColorSelector"
 import InputGroup from '@/components/InputGroup'
 import { NotesContext } from '@/context/NotesContext'
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 const AddNote = () => {
     const [noteTitle, setNoteTitle] = useState('')
@@ -88,4 +89,4 @@ const AddNote = () => {
     )
 }
 
-export default AddNote
+export default withPageAuthRequired(AddNote)

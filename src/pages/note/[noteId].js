@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react"
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client"
 import { useRouter } from 'next/router'
 import isEmpty from "lodash.isempty"
 import { NotesContext } from "@/context/NotesContext"
@@ -42,7 +43,7 @@ const NoteSingle = (props) => {
     }, [error])
 
     if (isEmpty(note)) {
-        return <h1>No Note found with id - {noteId}</h1>
+        return <h1>No Note found with given id</h1>
     }
 
     const { id, title, description, createdDate, color } = note
@@ -82,4 +83,4 @@ const NoteSingle = (props) => {
     )
 }
 
-export default NoteSingle
+export default withPageAuthRequired(NoteSingle)
