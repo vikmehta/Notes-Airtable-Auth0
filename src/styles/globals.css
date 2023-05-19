@@ -70,6 +70,10 @@ body {
   width: calc(100% - 48px);
 }
 
+.noteContent {
+  overflow: hidden;
+}
+
 .noteContent :is(p, ul, h1, h2, h3, h4, h5, h6) {
   margin-bottom: 10px;
 }
@@ -96,7 +100,7 @@ body {
 }
 
 .noteContent :is(ul, ol) {
-  padding-left: 15px;
+  padding-left: 20px;
 }
 
 .noteContent ul {

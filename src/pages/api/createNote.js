@@ -1,10 +1,19 @@
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 const Airtable = require('airtable')
 const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
 const table = base(process.env.AIRTABLE_TABLE_NAME)
 
 const createNote = async (req, res) => {
     try {
+        const { user } = await getSession(req, res)
+
+        if (!user) {
+            return res.status(400).json({ msg: 'Record not created. User must be logged in to post!!!' })
+        }
+
         const { title, description, color } = req.body
+
+        console.log(user)
 
         if (!title || !description || !color) {
             return res.status(400).json({ msg: 'Record not created. Missing the required fields!!!' })
@@ -25,4 +34,4 @@ const createNote = async (req, res) => {
     }
 }
 
-export default createNote
+export default withApiAuthRequired(createNote)

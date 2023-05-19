@@ -4,8 +4,21 @@ import ColorSelector from "@/components/ColorSelector"
 import InputGroup from '@/components/InputGroup'
 import { NotesContext } from '@/context/NotesContext'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import TitleWrapper from '@/components/TitleWrapper'
 
-const AddNote = () => {
+export const getServerSideProps = async (context) => {
+    const previousPageUrl = context.req.headers.referer || '/'
+
+    return {
+        props: {
+            previousPageUrl
+        }
+    }
+}
+
+const AddNote = (props) => {
+    const { previousPageUrl } = props
+
     const [noteTitle, setNoteTitle] = useState('')
     const [note, setNote] = useState('')
     const [selectedColor, setSelectedColor] = useState('white')
@@ -57,8 +70,8 @@ const AddNote = () => {
     return (
         <div>
             {error && <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-4 rounded relative' role='alert'>{error}</div>}
-            <h1 className='text-2xl mb-5'>Add a new note</h1>
-            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ${noteLoadingClass}`}>
+            <TitleWrapper title="Create a new note" previousPageUrl={previousPageUrl} />
+            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 my-6 ${noteLoadingClass}`}>
                 <InputGroup title="Note Title">
                     <input
                         type="text"

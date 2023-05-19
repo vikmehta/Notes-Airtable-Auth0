@@ -7,8 +7,10 @@ import ColorSelector from "@/components/ColorSelector"
 import { cleanUpSingleRecord } from "@/helpers/helpers"
 import usePrevious from "hooks/usePrevious"
 import { NotesContext } from "@/context/NotesContext"
+import TitleWrapper from "@/components/TitleWrapper"
 
 export const getServerSideProps = async (context) => {
+    const previousPageUrl = context.req.headers.referer || '/'
     const { noteId } = context.params
 
     const Airtable = require('airtable');
@@ -20,13 +22,14 @@ export const getServerSideProps = async (context) => {
 
     return {
         props: {
-            note: cleanNote
+            note: cleanNote,
+            previousPageUrl
         }
     }
 }
 
 const EditNote = (props) => {
-    const { note } = props
+    const { note, previousPageUrl } = props
 
     const [noteTitle, setNoteTitle] = useState('')
     const [noteDescription, setNoteDescription] = useState('')
@@ -94,8 +97,8 @@ const EditNote = (props) => {
 
     return (
         <div>
-            <h1 className='text-2xl mb-5'>Edit note</h1>
-            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 bg-${selectedColor} ${noteLoadingClass}`}>
+            <TitleWrapper title='Edit Note' previousPageUrl={previousPageUrl} />
+            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 my-6 ${noteLoadingClass}`}>
                 <InputGroup title="Note Title">
                     <input
                         type="text"

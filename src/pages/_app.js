@@ -5,13 +5,13 @@ import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export default function App({ Component, pageProps }) {
 	return (
-		<div className="container mx-auto p-6">
-			<UserProvider>
-				<NotesProvider>
-					<Header />
+		<UserProvider>
+			<NotesProvider>
+				<Header />
+				<div className="container mx-auto p-6">
 					<Component {...pageProps} />
-				</NotesProvider>
-			</UserProvider>
-		</div>
+				</div>
+			</NotesProvider>
+		</UserProvider>
 	)
 }
