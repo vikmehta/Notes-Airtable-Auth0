@@ -13,8 +13,6 @@ const createNote = async (req, res) => {
 
         const { title, description, color } = req.body
 
-        console.log(user)
-
         if (!title || !description || !color) {
             return res.status(400).json({ msg: 'Record not created. Missing the required fields!!!' })
         }
