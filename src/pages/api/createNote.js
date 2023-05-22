@@ -20,7 +20,8 @@ const createNote = async (req, res) => {
         const createdRecord = await table.create({
             title,
             description,
-            color
+            color,
+            userId: user.sub
         })
 
         res.status(201)
