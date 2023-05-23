@@ -8,7 +8,7 @@ const createNote = async (req, res) => {
         const { user } = await getSession(req, res)
 
         if (!user) {
-            return res.status(400).json({ msg: 'Record not created. User must be logged in to post!!!' })
+            return res.status(401).json({ msg: 'Record not created. User must be logged in to post!!!' })
         }
 
         const { title, description, color } = req.body

@@ -3,31 +3,40 @@ import { useContext, useEffect } from 'react'
 import { cleanUpRecords } from 'helpers/helpers'
 import Notes from '@/components/Notes'
 import { NotesContext } from '@/context/NotesContext'
+import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
-export const getServerSideProps = async (context) => {
-	const Airtable = require('airtable');
-	const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
-	const table = base(process.env.AIRTABLE_TABLE_NAME)
+export const getServerSideProps = withPageAuthRequired({
+	async getServerSideProps(context) {
+		const { user } = await getSession(context.req, context.res)
 
-	// const notes = await table.select({
-	// 	sort: [{ field: "createdDate", direction: "desc" }],
-	// 	//pageSize: 2
-	// }).firstPage()
+		if (!user) {
+			return res.status(401).json({ msg: 'User must be logged in to see notes!!!' })
+		}
 
-	const notes = await table.select({
-		sort: [{ field: "createdDate", direction: "desc" }],
-		// pageSize: 2
-	}).all()
+		const Airtable = require('airtable');
+		const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
+		const table = base(process.env.AIRTABLE_TABLE_NAME)
 
-	const cleanNotes = await cleanUpRecords(notes)
+		// const notes = await table.select({
+		// 	sort: [{ field: "createdDate", direction: "desc" }],
+		// 	//pageSize: 2
+		// }).firstPage()
 
-	return {
-		props: {
-			initialNotes: cleanNotes
+		const notes = await table.select({
+			filterByFormula: `userId = '${user.sub}'`,
+			sort: [{ field: "createdDate", direction: "desc" }],
+		}).all()
+
+		const cleanNotes = await cleanUpRecords(notes)
+
+		return {
+			props: {
+				initialNotes: cleanNotes
+			}
 		}
 	}
-}
+})
 
 const Home = (props) => {
 	const { initialNotes } = props
