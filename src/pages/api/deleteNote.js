@@ -1,3 +1,4 @@
+import ownsRecord from './middleware/OwnsRecord';
 const Airtable = require('airtable');
 const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
 const table = base(process.env.AIRTABLE_TABLE_NAME)
@@ -21,4 +22,4 @@ const deleteNote = async (req, res) => {
     }
 }
 
-export default deleteNote
+export default ownsRecord(deleteNote)

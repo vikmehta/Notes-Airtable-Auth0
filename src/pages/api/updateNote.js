@@ -1,3 +1,4 @@
+import ownsRecord from './middleware/OwnsRecord';
 const isEmpty = require('lodash.isempty');
 const Airtable = require('airtable')
 const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
@@ -22,4 +23,4 @@ const updateNote = async (req, res) => {
     }
 }
 
-export default updateNote
+export default ownsRecord(updateNote)
