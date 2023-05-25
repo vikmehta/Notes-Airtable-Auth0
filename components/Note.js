@@ -9,7 +9,7 @@ const Note = (props) => {
 
     return (
         <div className={`flex mb-3 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} note-container`}>
-            <div className="flex-1 px-9 py-7 noteWrapper">
+            <div className="flex-1 px-5 py-5 md:px-9 md:py-7 noteWrapper">
                 <h3 className="text-xl text-gray-700 font-semibold mb-2 uppercase noteTitle">
                     <Link href={`/note/${id}`}>{title}</Link>
                 </h3>

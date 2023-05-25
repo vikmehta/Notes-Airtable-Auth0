@@ -71,7 +71,7 @@ const AddNote = (props) => {
         <div>
             {error && <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-4 rounded relative' role='alert'>{error}</div>}
             <TitleWrapper title="Create a new note" previousPageUrl={previousPageUrl} />
-            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 my-6 ${noteLoadingClass}`}>
+            <form onSubmit={handleSubmit} className={`bg-white shadow-md rounded px-2 md:px-8 pt-2 pb-4 md:py-8 mb-4 my-3 md:my-6 ${noteLoadingClass}`}>
                 <InputGroup title="Note Title">
                     <input
                         type="text"
@@ -96,7 +96,7 @@ const AddNote = (props) => {
                 <InputGroup title="Select Note Color">
                     <ColorSelector selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
                 </InputGroup>
-                <button className='px-4 py-2 mt-3 shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white py-3 px-5 rounded-full'>Create Note</button>
+                <button className='px-4 py-2 mt-0 md:mt-3 shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white py-3 px-5 rounded-full'>Create Note</button>
             </form>
         </div>
     )

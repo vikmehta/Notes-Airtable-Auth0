@@ -69,7 +69,7 @@ const NoteSingle = (props) => {
         <>
             <TitleWrapper title='Note Details' previousPageUrl={previousPageUrl} />
             {error && <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-4 rounded relative' role='alert'>{error}</div>}
-            <div className={`flex my-6 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} ${styleConditional}`}>
+            <div className={`flex my-3 md:my-6 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} ${styleConditional}`}>
                 <div className="flex-1 p-5">
                     <h3 className="text-xl text-gray-700 font-semibold mb-2 noteTitle">
                         {title}

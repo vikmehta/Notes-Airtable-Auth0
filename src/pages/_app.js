@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }) {
 		<UserProvider>
 			<NotesProvider>
 				<Header />
-				<div className="container mx-auto p-6">
+				<div className="container mx-auto px-2 py-4">
 					<Component {...pageProps} />
 				</div>
 			</NotesProvider>
