@@ -1,85 +1,99 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react"
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { useRouter } from 'next/router';
-import InputGroup from '@/components/InputGroup';
-import ColorSelector from "@/components/ColorSelector";
-import { cleanUpSingleRecord } from "@/helpers/helpers";
-import { NotesContext } from "@/context/NotesContext";
-import TitleWrapper from "@/components/TitleWrapper";
+import isEmpty from "lodash.isempty"
+import { useRouter } from 'next/router'
+import InputGroup from '@/components/InputGroup'
+import ColorSelector from "@/components/ColorSelector"
+import { cleanUpSingleRecord } from "@/helpers/helpers"
+import usePrevious from "hooks/usePrevious"
+import { NotesContext } from "@/context/NotesContext"
+import TitleWrapper from "@/components/TitleWrapper"
 
 export const getServerSideProps = async (context) => {
     const previousPageUrl = context.req.headers.referer || '/'
     const { noteId } = context.params
 
     const Airtable = require('airtable');
-    const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
-    const table = base(process.env.AIRTABLE_TABLE_NAME);
+    const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID)
+    const table = base(process.env.AIRTABLE_TABLE_NAME)
 
-    try {
-        const note = await table.find(noteId);
-        const cleanNote = await cleanUpSingleRecord(note);
+    const note = await table.find(noteId)
+    const cleanNote = await cleanUpSingleRecord(note)
 
-        return {
-            props: {
-                note: cleanNote,
-                previousPageUrl
-            }
-        };
-    } catch (error) {
-        // Handle error fetching note or cleaning up the record
-        return {
-            notFound: true
-        };
+    return {
+        props: {
+            note: cleanNote,
+            previousPageUrl
+        }
     }
 }
 
 const EditNote = (props) => {
     const { note, previousPageUrl } = props
-    const { updateNote, noteUpdating, noteUpdated, errorNoteUpdating } = useContext(NotesContext);
-    const [noteTitle, setNoteTitle] = useState('');
-    const [noteDescription, setNoteDescription] = useState('');
-    const [selectedColor, setSelectedColor] = useState('white');
-    const router = useRouter();
+
+    const [noteTitle, setNoteTitle] = useState('')
+    const [noteDescription, setNoteDescription] = useState('')
+    const [selectedColor, setSelectedColor] = useState('white')
+
+    const prevNote = usePrevious(note)
+
+    const router = useRouter()
 
     useEffect(() => {
-        if (!note) {
-            router.push('/'); // Redirect if note is not found
-            return;
+        if (isEmpty(note)) {
+            return <h1>No Note found with given id.</h1>
         }
 
-        const { title, description, color } = note;
-        setNoteTitle(title);
-        setNoteDescription(description);
-        setSelectedColor(color);
-    }, [note, router]);
+        const { id, title, description, color } = note
+
+        setNoteTitle(title)
+        setNoteDescription(description)
+        setSelectedColor(color)
+
+    }, [note])
+
+    const { updateNote, noteUpdated, noteUpdating, errorNoteUpdating } = useContext(NotesContext)
+
+    useEffect(() => {
+        if (noteUpdated && !noteUpdating && !errorNoteUpdating) {
+            router.push('/')
+        }
+    }, [noteUpdated, noteUpdating, errorNoteUpdating, router])
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         if (!noteTitle || !noteDescription) {
-            // Handle form validation error
-            return;
+            // setError('Please fill out the Title and Note fields.')
+            return
         }
 
-        const formData = {
-            ...(noteTitle !== note.title && { title: noteTitle }),
-            ...(noteDescription !== note.description && { description: noteDescription }),
-            ...(selectedColor !== note.color && { color: selectedColor })
-        };
+        const formData = {}
 
-        if (Object.keys(formData).length === 0) {
-            // No changes made, do nothing
-            return;
+        if (prevNote.title !== noteTitle) {
+            formData.title = noteTitle
         }
 
-        const response = await updateNote(note.id, formData);
-
-        if (response && !noteUpdating && !errorNoteUpdating) {
-            router.push('/');
+        if (prevNote.description !== noteDescription) {
+            formData.description = noteDescription
         }
-    };
 
-    const noteLoadingClass = noteUpdating ? 'opacity-50' : '';
+        if (prevNote.color !== selectedColor) {
+            formData.color = selectedColor
+        }
+
+        if (isEmpty(formData)) return
+
+        const response = await updateNote(note.id, formData)
+
+        if (!response.response && !noteUpdating && !errorNoteUpdating) {
+            router.push('/')
+        }
+
+        // updateNote(note.id, formData)
+    }
+
+    const noteLoadingClass = noteUpdating ? 'opacity-50' : ''
 
     return (
         <div>

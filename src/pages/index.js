@@ -59,7 +59,7 @@ const Home = (props) => {
 				{!user && <h1 className='text-xl my-20 text-center'>You must be logged in to see / create notes.</h1>}
 				{user && (
 					<>
-						<h1 className='text-xl mb-5'>NextJS - AirTable - Auth0 App</h1>
+						<h1 className='tracking-widest heading mb-5'>All notes</h1>
 						<Notes notes={notes} />
 					</>
 				)}
