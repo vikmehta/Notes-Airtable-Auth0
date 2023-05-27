@@ -35,11 +35,15 @@ export const getServerSideProps = async (context) => {
 
 const EditNote = (props) => {
     const { note, previousPageUrl } = props
-    const { updateNote, noteUpdating, noteUpdated, errorNoteUpdating } = useContext(NotesContext);
+    const { updateNote, noteUpdating, noteUpdated, setNoteUpdated, errorNoteUpdating } = useContext(NotesContext);
     const [noteTitle, setNoteTitle] = useState('');
     const [noteDescription, setNoteDescription] = useState('');
     const [selectedColor, setSelectedColor] = useState('white');
     const router = useRouter();
+
+    // console.log('noteUpdating', noteUpdating)
+    // console.log('noteUpdated', noteUpdated)
+    // console.log('errorNoteUpdating', errorNoteUpdating)
 
     useEffect(() => {
         if (!note) {
@@ -73,9 +77,15 @@ const EditNote = (props) => {
         }
 
         const response = await updateNote(note.id, formData);
+        // console.log(response)
 
-        if (response && !noteUpdating && !errorNoteUpdating) {
-            router.push('/');
+        // if (response && !noteUpdating && !errorNoteUpdating) {
+        //     router.push('/');
+        // }
+
+        if (response && response.status === 200) {
+            router.push('/')
+            // setNoteUpdated(false)
         }
     };
 
