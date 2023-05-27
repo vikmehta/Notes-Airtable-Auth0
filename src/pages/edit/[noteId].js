@@ -83,7 +83,10 @@ const EditNote = (props) => {
         //     router.push('/');
         // }
 
-        if (response && response.status === 200) {
+        // console.log(response)
+        // console.log(note.id)
+
+        if (response && response.data.id === note.id) {
             router.push('/')
             // setNoteUpdated(false)
         }
