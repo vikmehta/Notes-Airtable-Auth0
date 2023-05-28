@@ -73,18 +73,9 @@ const EditNote = (props) => {
         }
 
         const response = await updateNote(note.id, formData);
-        console.log(response)
-
-        // if (response && !noteUpdating && !errorNoteUpdating) {
-        //     router.push('/');
-        // }
-
-        // console.log(response)
-        // console.log(note.id)
 
         if (response && response.id === note.id) {
             router.push('/')
-            // setNoteUpdated(false)
         }
     };
 
