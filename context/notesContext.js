@@ -77,6 +77,7 @@ export const NotesProvider = (props) => {
                 ...updates
             })
             const responseData = await response.data
+            setNoteUpdating(false)
             return responseData
         } catch (error) {
             console.log(error)
