@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client"
 import { useRouter } from 'next/router'
 import isEmpty from "lodash.isempty"
-import { NotesContext } from "@/context/NotesContext"
+import { NotesContext } from "@/context/notesContext"
 import { getDateFromTimestamp, sanitizeContent, cleanUpSingleRecord } from "@/helpers/helpers"
 import DeleteButton from "@/components/DeleteButton"
 import EditButton from "@/components/EditButton"

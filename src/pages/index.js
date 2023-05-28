@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useContext, useEffect } from 'react'
 import { cleanUpRecords } from 'helpers/helpers'
 import Notes from '@/components/Notes'
-import { NotesContext } from '@/context/NotesContext'
+import { NotesContext } from '@/context/notesContext'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useUser } from '@auth0/nextjs-auth0/client';
 

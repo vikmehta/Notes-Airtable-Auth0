@@ -1,6 +1,6 @@
 import '@/styles/globals.css'
 import Header from '@/components/Header'
-import { NotesProvider } from '@/context/NotesContext'
+import { NotesProvider } from '@/context/notesContext'
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 
 export default function App({ Component, pageProps }) {

@@ -6,7 +6,7 @@ import InputGroup from '@/components/InputGroup'
 import ColorSelector from "@/components/ColorSelector"
 import { cleanUpSingleRecord } from "@/helpers/helpers"
 import usePrevious from "hooks/usePrevious"
-import { NotesContext } from "@/context/NotesContext"
+import { NotesContext } from "@/context/notesContext"
 import TitleWrapper from "@/components/TitleWrapper"
 
 export const getServerSideProps = async (context) => {

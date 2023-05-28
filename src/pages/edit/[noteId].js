@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import InputGroup from '@/components/InputGroup';
 import ColorSelector from "@/components/ColorSelector";
 import { cleanUpSingleRecord } from "@/helpers/helpers";
-import { NotesContext } from "@/context/NotesContext";
+import { NotesContext } from "@/context/notesContext";
 import TitleWrapper from "@/components/TitleWrapper";
 
 export const getServerSideProps = async (context) => {
@@ -41,10 +41,6 @@ const EditNote = (props) => {
     const [selectedColor, setSelectedColor] = useState('white');
     const router = useRouter();
 
-    // console.log('noteUpdating', noteUpdating)
-    // console.log('noteUpdated', noteUpdated)
-    // console.log('errorNoteUpdating', errorNoteUpdating)
-
     useEffect(() => {
         if (!note) {
             router.push('/'); // Redirect if note is not found
@@ -77,7 +73,7 @@ const EditNote = (props) => {
         }
 
         const response = await updateNote(note.id, formData);
-        // console.log(response)
+        console.log(response)
 
         // if (response && !noteUpdating && !errorNoteUpdating) {
         //     router.push('/');
@@ -86,7 +82,7 @@ const EditNote = (props) => {
         // console.log(response)
         // console.log(note.id)
 
-        if (response && response.data.id === note.id) {
+        if (response && response.id === note.id) {
             router.push('/')
             // setNoteUpdated(false)
         }

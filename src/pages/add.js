@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import ColorSelector from "@/components/ColorSelector"
 import InputGroup from '@/components/InputGroup'
-import { NotesContext } from '@/context/NotesContext'
+import { NotesContext } from '@/context/notesContext'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import TitleWrapper from '@/components/TitleWrapper'
 

@@ -76,10 +76,12 @@ export const NotesProvider = (props) => {
                 id,
                 ...updates
             })
-            if (response.status === 200 && response.statusText === "OK") {
-                setNoteUpdating(false)
-                return response
-            }
+            const responseData = await response.data
+            return responseData
+            // if (response.status === 200 && response.statusText === "OK") {
+            //     setNoteUpdating(false)
+            //     return response
+            // }
         } catch (error) {
             console.log(error)
             setErrorNoteUpdating('Something went wrong while updating the note')
