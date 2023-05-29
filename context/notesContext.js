@@ -57,8 +57,10 @@ export const NotesProvider = (props) => {
         setNoteDeleting(true)
         try {
             const response = await axios.delete(`/api/deleteNote?id=${id}`)
+            const responseData = await response.data
+            console.log(response)
             setNoteDeleting(false)
-            return response
+            return responseData
         } catch (error) {
             setErrorDeletingNote({
                 msg: 'Something went wrong deleting the note',
