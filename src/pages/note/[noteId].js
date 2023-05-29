@@ -75,7 +75,7 @@ const NoteSingle = (props) => {
                         {title}
                     </h3>
                     <p className="text-gray-500 uppercase font-medium text-sm tracking-widest mb-3 createdDate">{date}</p>
-                    <div dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
+                    <div className="noteContent" dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
                 </div>
             </div>
             <div className="flex items-center">
