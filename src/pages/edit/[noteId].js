@@ -35,7 +35,7 @@ export const getServerSideProps = async (context) => {
 
 const EditNote = (props) => {
     const { note, previousPageUrl } = props
-    const { updateNote, noteUpdating, noteUpdated, setNoteUpdated, errorNoteUpdating } = useContext(NotesContext);
+    const { updateNote, noteUpdating } = useContext(NotesContext);
     const [noteTitle, setNoteTitle] = useState('');
     const [noteDescription, setNoteDescription] = useState('');
     const [selectedColor, setSelectedColor] = useState('white');
@@ -43,7 +43,7 @@ const EditNote = (props) => {
 
     useEffect(() => {
         if (!note) {
-            router.push('/'); // Redirect if note is not found
+            router.push('/listing'); // Redirect if note is not found
             return;
         }
 
@@ -75,7 +75,7 @@ const EditNote = (props) => {
         const response = await updateNote(note.id, formData);
 
         if (response && response.id === note.id) {
-            router.push('/')
+            router.push('/listing')
         }
     };
 

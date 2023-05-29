@@ -61,7 +61,7 @@ const AddNote = (props) => {
         setSelectedColor('white')
 
         if (!response.response && !noteLoadingStatus && !errorSingleNote) {
-            router.push('/')
+            router.push('/listing')
         }
     }
 

@@ -59,7 +59,7 @@ const NoteSingle = (props) => {
         const response = await removeNote(id)
 
         if (!response.response && !error && !noteDeleting) {
-            router.push('/')
+            router.push('/listing')
         }
     }
 

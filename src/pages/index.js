@@ -1,51 +1,19 @@
 import Head from 'next/head'
-import { useContext, useEffect } from 'react'
-import { cleanUpRecords } from 'helpers/helpers'
-import Notes from '@/components/Notes'
-import { NotesContext } from '@/context/notesContext'
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useEffect } from 'react'
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/router';
+import Image from 'next/image'
+import Link from "next/link"
 
-export const getServerSideProps = withPageAuthRequired({
-	async getServerSideProps(context) {
-		const { user } = await getSession(context.req, context.res)
-
-		if (!user) {
-			return res.status(401).json({ msg: 'User must be logged in to see notes!!!' })
-		}
-
-		const Airtable = require('airtable');
-		const base = new Airtable({ apiKey: process.env.AIRTABLE_ACCESS_TOKEN }).base(process.env.AIRTABLE_BASE_ID);
-		const table = base(process.env.AIRTABLE_TABLE_NAME)
-
-		// const notes = await table.select({
-		// 	sort: [{ field: "createdDate", direction: "desc" }],
-		// 	//pageSize: 2
-		// }).firstPage()
-
-		const notes = await table.select({
-			filterByFormula: `userId = '${user.sub}'`,
-			sort: [{ field: "createdDate", direction: "desc" }],
-		}).all()
-
-		const cleanNotes = await cleanUpRecords(notes)
-
-		return {
-			props: {
-				initialNotes: cleanNotes
-			}
-		}
-	}
-})
-
-const Home = (props) => {
-	const { initialNotes } = props
-	const { notes, setNotes } = useContext(NotesContext)
+const Home = () => {
 	const { user, error, isLoading } = useUser();
+	const router = useRouter();
 
 	useEffect(() => {
-		setNotes(initialNotes)
-	}, [initialNotes, setNotes])
+		if (user) {
+			router.push('/listing')
+		}
+	}, [user, router])
 
 	return (
 		<>
@@ -56,12 +24,19 @@ const Home = (props) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<main>
-				{!user && <h1 className='text-xl my-20 text-center'>You must be logged in to see / create notes.</h1>}
-				{user && (
-					<>
-						<h1 className='tracking-widest heading mb-5'>All notes</h1>
-						<Notes notes={notes} />
-					</>
+				{!user && (
+					<section className="text-gray-600 body-font flex items-center heroSection">
+						<div className="container p-5 mx-auto flex heroContainer">
+							<div className="sm:w-1/2 xl:w-1/3 flex flex-col justify-center sm:pr-10">
+								<h1 className="text-2xl font-medium title-font text-gray-900 mb-4">Ignite Creativity with NoteSpark!</h1>
+								<p className='mb-4'>Welcome to NoteSpark, where inspiration and productivity converge. To fully embrace the benefits of our feature-rich note-taking tool, we encourage you to log in to your account.</p>
+								<Link href="/api/auth/login" className="rounded bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 text-sm md:text-base text-center">Login Now</Link>
+							</div>
+							<div className='sm:w-1/2 xl:w-2/3 relative object-cover'>
+								<Image src="/notes1.svg" alt="Login" fill={true} />
+							</div>
+						</div>
+					</section>
 				)}
 			</main>
 		</>
