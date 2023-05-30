@@ -29,23 +29,8 @@ export const getServerSideProps = async (context) => {
 
 const NoteSingle = (props) => {
     const { note, previousPageUrl } = props
-    // const [error, setError] = useState(null)
-    const { removeNote, noteDeleting, errorDeletingNote } = useContext(NotesContext)
+    const { removeNote, noteDeleting } = useContext(NotesContext)
     const router = useRouter()
-
-    // useEffect(() => {
-    //     if (!isEmpty(errorDeletingNote)) {
-    //         setError(errorDeletingNote.msg)
-    //     }
-    // }, [errorDeletingNote])
-
-    // useEffect(() => {
-    //     if (error) {
-    //         setTimeout(() => {
-    //             setError(null)
-    //         }, 5000)
-    //     }
-    // }, [error])
 
     if (isEmpty(note)) {
         return <h1>No Note found with given id</h1>
@@ -61,10 +46,6 @@ const NoteSingle = (props) => {
         if (response && response.id === note.id) {
             router.push('/listing')
         }
-
-        // if (!response.response && !error && !noteDeleting) {
-        //     router.push('/listing')
-        // }
     }
 
     const styleConditional = noteDeleting ? 'opacity-50' : ''
@@ -72,7 +53,6 @@ const NoteSingle = (props) => {
     return (
         <>
             <TitleWrapper title='Note Details' previousPageUrl={previousPageUrl} />
-            {/* {error && <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-4 rounded relative' role='alert'>{error}</div>} */}
             <div className={`flex my-3 md:my-6 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} ${styleConditional}`}>
                 <div className="flex-1 p-5">
                     <h3 className="text-xl text-gray-700 font-semibold mb-2 noteTitle">

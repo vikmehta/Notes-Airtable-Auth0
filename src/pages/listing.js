@@ -5,6 +5,7 @@ import Notes from '@/components/Notes'
 import { NotesContext } from '@/context/notesContext'
 import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import Loader from '@/components/Loader'
 
 export const getServerSideProps = withPageAuthRequired({
     async getServerSideProps(context) {
@@ -56,6 +57,7 @@ const Listing = (props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                {isLoading && <Loader />}
                 {!user && <h1 className='text-xl my-20 text-center'>You must be logged in to see / create notes.</h1>}
                 {user && (
                     <>

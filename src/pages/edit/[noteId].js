@@ -36,7 +36,7 @@ export const getServerSideProps = async (context) => {
 
 const EditNote = (props) => {
     const { note, previousPageUrl } = props
-    const { updateNote, noteUpdating, removeNote, noteDeleting, errorDeletingNote } = useContext(NotesContext);
+    const { updateNote, noteUpdating, removeNote, noteDeleting } = useContext(NotesContext);
     const [noteTitle, setNoteTitle] = useState('');
     const [noteDescription, setNoteDescription] = useState('');
     const [selectedColor, setSelectedColor] = useState('white');
