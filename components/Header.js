@@ -1,10 +1,11 @@
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Link from "next/link"
+import Loader from './Loader';
 
 const Header = () => {
     const { user, error, isLoading } = useUser()
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <Loader />;
     if (error) return null;
 
     return (

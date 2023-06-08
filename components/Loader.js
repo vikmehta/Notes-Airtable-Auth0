@@ -102,8 +102,8 @@ const loadingMessages = [
     "i'm not lazy, I'm just relaxed!!",
     "Never steal. The government hates competition....",
     "Why are they called apartments if they are all stuck together?",
-    "Life is Short – Talk Fast!!!!",
-    "Optimism – is a lack of information.....",
+    "Life is Short. Talk Fast!!!!",
+    "Optimism is a lack of information...",
     "Save water and shower together",
     "Whenever I find the key to success, someone changes the lock.",
     "Sometimes I think war is God's way of teaching us geography.",
@@ -285,14 +285,14 @@ const Loader = () => {
         // Interval to change the message every 2 seconds
         const interval = setInterval(() => {
             setIndex((prevIndex) => (prevIndex + 1) % shuffledMessages.length);
-        }, 1500);
+        }, 2000);
 
         // Clear the interval on component unmount
         return () => clearInterval(interval);
     }, [index]);
 
     return (
-        <div className="flex flex-col justify-center items-center h-screen w-100 fixed top-0 left-0 right-0 bottom-0 z-10">
+        <div className="flex flex-col justify-center items-center h-screen w-100 fixed top-0 left-0 right-0 bottom-0 z-10 px-3 bg-white text-center">
             <div className="loader mb-2" />
             <h2 className="text-3xl font-bold mb-2 tracking-wide text-indigo-500">Loading...</h2>
             <span className="tracking-wide">{currentMessage}</span>
