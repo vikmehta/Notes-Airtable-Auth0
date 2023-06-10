@@ -5,6 +5,7 @@ import InputGroup from '@/components/InputGroup'
 import { NotesContext } from '@/context/notesContext'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import TitleWrapper from '@/components/TitleWrapper'
+import { CldUploadWidget, CldImage } from 'next-cloudinary';
 
 export const getServerSideProps = async (context) => {
     const previousPageUrl = context.req.headers.referer || '/'
@@ -23,6 +24,7 @@ const AddNote = (props) => {
     const [note, setNote] = useState('')
     const [selectedColor, setSelectedColor] = useState('white')
     const [error, setError] = useState(null)
+    const [imageInfo, setImageInfo] = useState('')
 
     const { addNote, noteLoadingStatus, errorSingleNote } = useContext(NotesContext)
     const router = useRouter()
@@ -52,7 +54,8 @@ const AddNote = (props) => {
         const formData = {
             title: noteTitle,
             description: note,
-            color: selectedColor
+            color: selectedColor,
+            image: imageInfo
         }
 
         const response = await addNote(formData)
@@ -65,7 +68,32 @@ const AddNote = (props) => {
         }
     }
 
+    const handleImageUpload = async (result, widget) => {
+        const { event, info } = await result
+
+        if (event === 'success') {
+            setImageInfo(info.public_id)
+        }
+
+        widget.close({
+            quiet: true
+        });
+    }
+
+    const handleImageError = async (err, widget) => {
+        if (err) {
+            setError('Image Upload Error');
+
+            widget.close({
+                quiet: true
+            });
+            return;
+        }
+    }
+
     const noteLoadingClass = noteLoadingStatus ? 'opacity-50' : ''
+
+    console.log(imageInfo)
 
     return (
         <div>
@@ -96,7 +124,36 @@ const AddNote = (props) => {
                 <InputGroup title="Select Note Color">
                     <ColorSelector selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
                 </InputGroup>
-                <button className='px-4 py-2 mt-0 md:mt-3 shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white py-3 px-5 rounded-full'>Create Note</button>
+                <div className='flex items-center flex-wrap mt-0 md:mt-3'>
+                    <CldUploadWidget
+                        uploadPreset="notes-airtable"
+                        onUpload={handleImageUpload}
+                        onError={handleImageError}
+                    >
+                        {({ open }) => {
+                            function handleOnClick(e) {
+                                e.preventDefault();
+                                open();
+                            }
+                            return (
+                                <button className="px-3 pe-4 py-3 me-2 flex items-center rounded-full bg-indigo-500 hover:bg-indigo-400 text-white" onClick={handleOnClick}>
+                                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className='w-6 me-1'><path fill="none" d="M0 0h24v24H0z"></path><path d="M5 20h14v-2H5v2zm0-10h4v6h6v-6h4l-7-7-7 7z"></path></svg>
+                                    <span className='whitespace-nowrap'>Image</span>
+                                </button>
+                            );
+                        }}
+                    </CldUploadWidget>
+                    <button className='shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white py-3 px-5 rounded-full me-2'>Create Note</button>
+                    {imageInfo && (
+                        <CldImage
+                            width="48"
+                            height="48"
+                            src={imageInfo}
+                            alt={noteTitle ? noteTitle : "Description of uploaded Image"}
+                            className='previewImage w-10 h-10 rounded-full ring-2 ring-pink'
+                        />
+                    )}
+                </div>
             </form>
         </div>
     )

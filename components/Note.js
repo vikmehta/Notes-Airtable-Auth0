@@ -1,14 +1,26 @@
+import { CldImage } from 'next-cloudinary';
 import Link from "next/link"
 import { getDateFromTimestamp, sanitizeContent } from "helpers/helpers"
 import EditButton from "./EditButton"
 
 const Note = (props) => {
-    const { id, title, description, createdDate, color } = props
+    const { id, title, description, createdDate, color, image } = props
     const created = getDateFromTimestamp(createdDate)
     const sanitizedDescription = sanitizeContent(description)
 
     return (
-        <div className={`flex mb-3 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} note-container`}>
+        <div className={`mb-3 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} note-container`}>
+            {image && (
+                <div className='rounded-t-lg'>
+                    <CldImage
+                        src={image}
+                        alt={title}
+                        width="700"
+                        height={700}
+                        className='rounded-t-lg'
+                    />
+                </div>
+            )}
             <div className="flex-1 px-5 py-5 md:px-9 md:py-7 noteWrapper">
                 <h3 className="text-xl text-gray-700 font-semibold mb-2 noteTitle">
                     <Link href={`/note/${id}`}>{title}</Link>

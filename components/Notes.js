@@ -17,9 +17,9 @@ const Notes = (props) => {
             columnClassName="my-masonry-grid_column"
         >
             {notes.map((note) => {
-                const { id, title, description, createdDate, color } = note
+                const { id, title, description, createdDate, color, image } = note
 
-                return <Note key={id} id={id} title={title} description={description} createdDate={createdDate} color={color} />
+                return <Note key={id} id={id} title={title} description={description} createdDate={createdDate} color={color} image={image} />
             })}
         </Masonry>
     )

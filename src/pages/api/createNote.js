@@ -11,7 +11,7 @@ const createNote = async (req, res) => {
             return res.status(401).json({ msg: 'Record not created. User must be logged in to post!!!' })
         }
 
-        const { title, description, color } = req.body
+        const { title, description, color, image } = req.body
 
         if (!title || !description || !color) {
             return res.status(400).json({ msg: 'Record not created. Missing the required fields!!!' })
@@ -21,6 +21,7 @@ const createNote = async (req, res) => {
             title,
             description,
             color,
+            image,
             userId: user.sub
         })
 
