@@ -1,4 +1,5 @@
-import { useContext, useState, useEffect } from "react"
+import { useContext } from "react"
+import { CldImage } from 'next-cloudinary';
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client"
 import { useRouter } from 'next/router'
 import isEmpty from "lodash.isempty"
@@ -36,7 +37,7 @@ const NoteSingle = (props) => {
         return <h1>No Note found with given id</h1>
     }
 
-    const { id, title, description, createdDate, color } = note
+    const { id, title, description, createdDate, color, image } = note
     const date = getDateFromTimestamp(createdDate)
     const sanitizedDescription = sanitizeContent(description)
 
@@ -53,7 +54,18 @@ const NoteSingle = (props) => {
     return (
         <>
             <TitleWrapper title='Note Details' previousPageUrl={previousPageUrl} />
-            <div className={`flex my-3 md:my-6 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} ${styleConditional}`}>
+            <div className={`lg:flex my-3 md:my-6 bg-white shadow-lg rounded-lg text-blue-500 bg-${color} ${styleConditional}`}>
+                {image && (
+                    <div className='rounded-t-lg md:rounded-l-lg lg:w-1/2 w-full'>
+                        <CldImage
+                            src={image}
+                            alt={title}
+                            width="700"
+                            height={700}
+                            className='rounded-t-lg md:rounded-l-lg w-full'
+                        />
+                    </div>
+                )}
                 <div className="flex-1 p-5">
                     <h3 className="text-xl text-gray-700 font-semibold mb-2 noteTitle">
                         {title}
