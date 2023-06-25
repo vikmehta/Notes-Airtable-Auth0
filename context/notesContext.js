@@ -53,9 +53,19 @@ export const NotesProvider = (props) => {
         }
     }
 
-    const removeNote = async (id) => {
+    const removeNote = async (id, image) => {
         setNoteDeleting(true)
         try {
+            if (image) {
+                await axios.post('/api/deleteImage', {
+                    "publicId": image
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    }
+                })
+            }
             const response = await axios.delete(`/api/deleteNote?id=${id}`)
             const responseData = await response.data
             setNoteDeleting(false)

@@ -42,7 +42,7 @@ const NoteSingle = (props) => {
     const sanitizedDescription = sanitizeContent(description)
 
     const handleDeleteNote = async (id) => {
-        const response = await removeNote(id)
+        const response = await removeNote(id, image)
 
         if (response && response.id === note.id) {
             router.push('/listing')

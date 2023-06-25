@@ -41,7 +41,7 @@ const EditNote = (props) => {
     const [noteDescription, setNoteDescription] = useState('');
     const [selectedColor, setSelectedColor] = useState('white');
     const router = useRouter();
-    const { id } = note
+    const { id, image } = note
 
     useEffect(() => {
         if (!note) {
@@ -82,7 +82,7 @@ const EditNote = (props) => {
     };
 
     const handleDeleteNote = async (id) => {
-        const response = await removeNote(id)
+        const response = await removeNote(id, image)
 
         if (response && response.id === note.id) {
             router.push('/listing')
